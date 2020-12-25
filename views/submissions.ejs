@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<title>Submissions | CodeManiacs</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/css/sheet.css">
+	<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+	<link rel="stylesheet" type="text/css" href="/css/grid.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+	<header>
+		<% include partials/header %>
+	</header>
+
+	<div class="grid-content content">
+		<div class="box">
+			<h2 class="title center">
+				<%= locals.user.username %> submissions</h2>
+			<hr>
+			<table id="submission-history" class="table sortable">
+				<thead>
+					<tr>
+						<th><a><i class="fa fa-sort" aria-hidden="true"></i> Submission ID</a></th>
+						<th><a><i class="fa fa-sort" aria-hidden="true"></i> Date</a></th>
+						<th><a><i class="fa fa-sort" aria-hidden="true"></i> Problem</a></th>
+						<th><a><i class="fa fa-sort" aria-hidden="true"></i> Language</a></th>
+						<th><a><i class="fa fa-sort" aria-hidden="true"></i> Verdict</a></th>
+						<th><a><i class="fa fa-sort" aria-hidden="true"></i> Time</a></th>
+						<th><a><i class="fa fa-sort" aria-hidden="true"></i> Memory</a></th>
+					</tr>
+				</thead>
+				<tbody id="show-all-contests">
+					<% for(var i = 0; i < data.length; i++) { %>
+					<tr>
+						<td>
+							<a href="/user/submission/<%= data[i].subID %>"><%= data[i].subID %></a>
+						</td>
+						<td>
+							<%= data[i].date %>
+						</td>
+						<td>
+							<a href="/problem/<%=data[i].qID%>" target="_blank">
+								<%= data[i].qID %></a>
+						</td>
+						<td>
+							<%= data[i].language %>
+						</td>
+						<td>
+							<span style="color: darkblue">
+								<% if(data[i].verdict === "Accepted") { %>
+								<strong style="color:rgb(38, 134, 0);">
+									<% } %>
+									<%= data[i].verdict %>
+									<% if(data[i].verdict === "Accepted") { %>
+								</strong>
+								<% } %>
+							</span>
+						</td>
+						<td>
+							<%= data[i].time %> s
+						</td>
+						<td>
+							<%= data[i].memory %> KB
+						</td>
+					</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<footer>
+		<% include partials/footer %>
+	</footer>
+</body>
+
+</html>

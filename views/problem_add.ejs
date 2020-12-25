@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/sheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.0/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/grid.css">
+    <title>Add | CodeManiacs</title>
+</head>
+
+<body>
+    <header>
+        <% include partials/header %>
+    </header>
+    <div class="grid-content small content">
+        <div class="box">
+            <a href="/admin/add" style="font-size: 15px;">ADD PROBLEM</a> |
+            <a href="/admin/new-contest" style="font-size: 15px;">HOST NEW CONTEST</a> |
+            <a href="/admin/my-contests" style="font-size: 15px;">SHOW/EDIT CONTESTS</a> |
+            <a href="/admin/manage-admins" style="font-size: 15px;">MANAGE ADMINS</a>
+            <h1 class="title center">Submit Question</h1>
+            <hr>
+            <h2 class="subtitle">Name <span style="color:red">*</span></h2>
+            <textarea class="textarea title" rows="1" id="QuesName"></textarea>
+
+            <div class="form-group">
+                <h2 class="subtitle">Visibility</h2>
+                <select class="form-control" id="isVisible">
+                    <option value="true" selected>true</option>
+                    <option value="false">false</option>
+                </select>
+            </div>
+
+            <h2 class="subtitle">Description <span style="color:red">*</span></h2>
+            <textarea class="textarea" id="Description"></textarea>
+            <h2 class="subtitle">Input Format</h2>
+            <textarea class="textarea" id="InputFormat"></textarea>
+            <h2 class="subtitle">Output Format</h2>
+            <textarea class="textarea" id="OutputFormat"></textarea>
+            <h2 class="subtitle">Constraints <span style="color:red">*</span></h2>
+            <textarea class="textarea" id="Constraints"></textarea>
+            <h2 class="subtitle">Sample Input</h2>
+            <textarea class="textarea" id="SampleInput"></textarea>
+            <h2 class="subtitle">Sample Output</h2>
+            <textarea class="textarea" id="SampleOutput"></textarea>
+            <h2 class="subtitle">Explanation</h2>
+            <textarea class="textarea" id="Explanation"></textarea>
+            <h2 class="subtitle">Difficulty</h2>
+            <select id="DifficultyLevel">
+                <option value="0">Beginner</option>
+                <option value="1">Easy</option>
+                <option value="2">Medium</option>
+                <option value="3">Hard</option>
+            </select>
+            <!-- <textarea class="textarea" rows="1" id="DifficultyLevel"></textarea> -->
+            <h2 class="subtitle">Problem Setter</h2>
+            <textarea class="textarea" rows="1" id="ProblemSetter" disabled><%=locals.user.name%></textarea>
+            <h2 class="subtitle">Time Limit (seconds) <span style="color: red">*</span></h2>
+            <input type="number" min="1" class="textarea" rows="1" id="TimeLimit" value="1"></input>
+            <h2 class="subtitle">Memory Limit (kB) <span style="color: red">*</span></h2>
+            <input type="number" min="1" class="textarea" rows="1" id="MemoryLimit" value="262144"></input>
+            <h2 class="subtitle">Tags</h2>
+            <textarea class="textarea" rows="1" id="Tags"></textarea>
+            <h2 class="subtitle">Editorial</h2>
+            <textarea class="textarea" rows="1" id="Editorial"></textarea>
+            <hr>
+            <h2 class="subtitle">Testcases <span style="color:red">*</span></h2>
+            <!-- <a class="button is-success is-rounded" id="add">Add</a>
+            <a class="button is-danger is-rounded" id="rem">Remove</a> -->
+            <h4 class="">Add testcases through files</h4>
+            <input type="file" id="Testcases" accept="text/plain" multiple="multiple" /><br><br>
+            <h4 class="">Add testcases through textbox</h4>
+            <a class="button is-success is-rounded" id="add">Add</a>
+            <a class="button is-danger is-rounded" id="rem">Remove</a> <br> <br>
+            <!-- <input type="file" id="testcases" /> -->
+            <!-- <input type="submit" /> -->
+            <div id="testcases"></div>
+            <br>
+            <button class="button is-link submit">Submit</button>
+        </div>
+    </div>
+    <footer>
+        <% include partials/footer %>
+    </footer>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/problem_add.js" defer></script>
+
+</html>

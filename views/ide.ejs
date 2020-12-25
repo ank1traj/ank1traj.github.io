@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>IDE | CodeManiacs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/sheet.css">
+    <link rel="stylesheet" type="text/css" href="/css/grid.css">
+    <link rel="stylesheet" type="text/css" href="/css/ide.css">
+    <link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <% include partials/header %>
+    </header>
+    <div class="main">
+        <div id="ide-heading">CodeManiacs IDE</div>
+        <div class="main-heading">
+            <div class="submit-container">
+                <div id="editor">#include &#60;bits/stdc++.h&#62;
+using namespace std;
+
+int main(){
+    // Your code starts here
+
+    return 0;
+}
+                </div>
+            </div>
+            <div class="submit">
+                <div id="time-memo"></div>
+                <select id="language">
+                    <% for (var i=0; i<langlist.length; i++) { %>
+                    <option value="<%= langlist[i].id %>">
+                        <%= langlist[i].name %>
+                    </option>
+                    <% } %>
+                </select>
+                <button type="button" id="submit-btn" class="btn btn-primary btn-md">Submit</button>
+            </div>
+            <div class="container">
+                <div class="ide-output row">
+                    <div class="tarea col-md-6 col-xs-12">
+                        <p>Input</p>
+                        <textarea id="stdin" rows="8"></textarea>
+                    </div>
+                    <div class="tarea col-md-6 col-xs-12">
+                        <p>Output</p>
+                        <textarea id="stdout" rows="8" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <% include partials/footer %>
+    </footer>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/chrome");
+        editor.session.setMode("ace/mode/c_cpp");
+        editor.setFontSize("16px");
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
+    <script>
+        $('#submit-btn').on('click', function () {
+            $('#submit-btn').html('<i class="fa fa-spinner fa-spin"></i>');
+            $('#submit-btn').prop('disabled', true);
+            data = {
+                src: editor.getValue(),
+                lang: $('#language').val(),
+                stdin: $('#stdin').val()
+            };
+            $.ajax('/ide', {
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                type: 'POST'
+            }).done(function (res) {
+                if (res.status.id !== 3) {
+                    $('#stdout').css('color', 'red');
+                    if (res.compile_output == null) {
+                        $('#stdout').val(res.status.description);
+                    }
+                    else {
+                        $('#stdout').val(res.compile_output + '\n' + res.status.description);
+                    }
+                } else {
+                    $('#stdout').css('color', 'black');
+                    $('#stdout').val(res.stdout);
+                    document.getElementById('time-memo').innerHTML = "Used: " + res.time + " s, " + res.memory + " KB";
+                }
+                $('#submit-btn').html('Submit')
+                $('#submit-btn').prop('disabled', false);
+            });
+        });
+        $("#language").change(function () {
+            var lang_enum = $(this).val();
+            if (lang_enum == 10 || lang_enum == 4) {
+                editor.session.setMode("ace/mode/c_cpp");
+                var dummycpp = 
+`#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    // Your code starts here
+
+    return 0;
+}`
+                var dummyc = 
+`#include <stdio.h>
+int main(void){
+    // Your code starts here
+
+    return 0;
+}`
+                if(lang_enum == 4)
+                    editor.setValue(dummyc);
+                else
+                    editor.setValue(dummycpp);
+            }
+            else if (lang_enum == 34 || lang_enum == 36) {
+                editor.session.setMode("ace/mode/python");
+                editor.setValue("#Your code here")
+            }
+            else if (lang_enum == 27) {
+                editor.session.setMode("ace/mode/java");
+                var dummyjava = 
+`public class Main {
+    public static void main(String[] args) {
+        System.out.println("hello, world");
+    }
+}`
+                editor.setValue(dummyjava);
+            }
+        });
+    </script>
+</body>
+
+</html>
